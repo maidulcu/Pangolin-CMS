@@ -15,6 +15,8 @@ A CLI tool to export WordPress sites to static HTML for deployment to S3, Netlif
 - Automatic link rewriting (absolute → relative URLs)
 - Sitemap discovery (supports WordPress native sitemaps)
 - S3 deployment with automatic content-type detection
+- Local preview server
+- Web dashboard for export management
 - Config stored in `~/.staticpress/`
 
 ## Installation
@@ -90,6 +92,28 @@ Flags:
 - `-r, --region` - AWS region (default: "us-east-1")
 - `-d, --dist` - Directory to deploy (default: "dist")
 
+### serve
+
+Start a local server to preview the exported site.
+
+```bash
+staticpress serve [flags]
+```
+
+Flags:
+- `-d, --dist` - Directory to serve (default: "dist")
+- `-p, --port` - Port to listen on (default: 8080)
+
+### dashboard
+
+Start the web dashboard for managing exports.
+
+```bash
+staticpress dashboard
+```
+
+Starts on http://localhost:3000
+
 ## Configuration
 
 Config is stored at `~/.staticpress/staticpress.yaml`:
@@ -137,17 +161,22 @@ The WordPress plugin provides API key authentication. Install from [wp-plugin/](
 
 ```
 staticpress/
-├── main.go                 # Entry point
+├── main.go                 # CLI entry point
 ├── cmd/
 │   ├── init.go            # init command
 │   ├── export.go          # export command
 │   ├── deploy.go          # deploy command
+│   ├── serve.go           # preview server
+│   ├── dashboard.go       # dashboard command
 │   └── internal/
 │       ├── config/        # Config management
 │       ├── sitemap/       # Sitemap fetching
 │       ├── crawler/       # Page fetching & link rewriting
 │       └── exporter/      # Export & S3 upload
-└── wp-plugin/              # WordPress plugin
+├── dashboard/             # Web dashboard
+│   ├── main.go           # Fiber server
+│   └── views/            # HTMX templates
+└── wp-plugin/            # WordPress plugin
 ```
 
 ## Security
@@ -161,11 +190,12 @@ staticpress/
 
 - [x] MVP - CLI export to local folder
 - [x] WordPress Plugin for auth
+- [x] Preview mode (local server)
+- [x] Dashboard for export management
 - [ ] Netlify deployment
 - [ ] Image optimization
 - [ ] Incremental exports
-- [ ] Preview mode (local server)
-- [ ] Dashboard for Pro users
+- [ ] Auto-sync on content change
 
 ## License
 
