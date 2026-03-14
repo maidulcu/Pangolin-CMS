@@ -20,6 +20,7 @@ func main() {
 	rootCmd.AddCommand(cmd.ExportCmd)
 	rootCmd.AddCommand(cmd.DeployCmd)
 	rootCmd.AddCommand(cmd.ServeCmd)
+	rootCmd.AddCommand(cmd.DashboardCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
