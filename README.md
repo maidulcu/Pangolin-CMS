@@ -147,7 +147,7 @@ staticpress/
 │       ├── sitemap/       # Sitemap fetching
 │       ├── crawler/       # Page fetching & link rewriting
 │       └── exporter/      # Export & S3 upload
-└── wp-plugin/              # WordPress plugin (future)
+└── wp-plugin/              # WordPress plugin
 ```
 
 ## Security
@@ -160,7 +160,7 @@ staticpress/
 ## Roadmap
 
 - [x] MVP - CLI export to local folder
-- [ ] WordPress Plugin for auth
+- [x] WordPress Plugin for auth
 - [ ] Netlify deployment
 - [ ] Image optimization
 - [ ] Incremental exports
