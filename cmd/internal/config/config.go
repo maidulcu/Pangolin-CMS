@@ -15,14 +15,14 @@ type Config struct {
 }
 
 func LoadConfig() (*Config, error) {
-	viper.SetConfigName("staticpress")
+	viper.SetConfigName("pangolin")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("$HOME/.staticpress")
+	viper.AddConfigPath("$HOME/.pangolin")
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			return nil, fmt.Errorf("config file not found, run 'staticpress init' first")
+			return nil, fmt.Errorf("config file not found, run 'pangolin init' first")
 		}
 		return nil, err
 	}
@@ -44,12 +44,12 @@ func SaveConfig(cfg *Config) error {
 		return err
 	}
 
-	configDir := homeDir + "/.staticpress"
+	configDir := homeDir + "/.pangolin"
 	if err := os.MkdirAll(configDir, 0755); err != nil {
 		return err
 	}
 
-	viper.SetConfigName("staticpress")
+	viper.SetConfigName("pangolin")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configDir)
 

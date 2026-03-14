@@ -17,7 +17,7 @@ var ServeCmd = &cobra.Command{
 		port, _ := cmd.Flags().GetInt("port")
 
 		if _, err := os.Stat(distDir); os.IsNotExist(err) {
-			return fmt.Errorf("directory %s does not exist, run 'staticpress export' first", distDir)
+			return fmt.Errorf("directory %s does not exist, run 'pangolin export' first", distDir)
 		}
 
 		fmt.Printf("Starting server at http://localhost:%d\n", port)

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"staticpress/cmd/internal/config"
-	"staticpress/cmd/internal/exporter"
+	"github.com/pangolin-cms/staticpress/cmd/internal/config"
+	"github.com/pangolin-cms/staticpress/cmd/internal/exporter"
 
 	"github.com/spf13/cobra"
 )

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"sync"
 
-	"staticpress/cmd/internal/config"
-	"staticpress/cmd/internal/crawler"
+	"github.com/pangolin-cms/staticpress/cmd/internal/config"
+	"github.com/pangolin-cms/staticpress/cmd/internal/crawler"
 
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"

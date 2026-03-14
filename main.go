@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"os"
 
-	"staticpress/cmd"
+	"github.com/pangolin-cms/staticpress/cmd"
 
 	"github.com/spf13/cobra"
 )
 
 func main() {
 	rootCmd := &cobra.Command{
-		Use:   "staticpress",
-		Short: "StaticPress - Export WordPress sites to static HTML",
+		Use:   "pangolin",
+		Short: "Pangolin - Export WordPress sites to static HTML",
 		Long:  `A CLI tool to export WordPress sites to static HTML files for deployment to S3, Netlify, or other static hosting providers.`,
 	}
 

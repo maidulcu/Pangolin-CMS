@@ -1,8 +1,8 @@
-# StaticPress
+# Pangolin
 
 A CLI tool to export WordPress sites to static HTML for deployment to S3, Netlify, or other static hosting providers.
 
-## Why StaticPress?
+## Why Pangolin?
 
 - **Performance**: Serve static HTML instead of dynamic PHP
 - **Security**: No WordPress database or plugins exposed
@@ -17,50 +17,50 @@ A CLI tool to export WordPress sites to static HTML for deployment to S3, Netlif
 - S3 deployment with automatic content-type detection
 - Local preview server
 - Web dashboard for export management
-- Config stored in `~/.staticpress/`
+- Config stored in `~/.pangolin/`
 
 ## Installation
 
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/staticpress.git
+git clone https://github.com/pangolin-cms/staticpress.git
 cd staticpress
-go build -o staticpress .
+go build -o pangolin .
 ```
 
 ### Pre-built Binaries
 
-Download from [Releases](https://github.com/yourusername/staticpress/releases)
+Download from [Releases](https://github.com/pangolin-cms/staticpress/releases)
 
 ## Quick Start
 
 ### 1. Initialize
 
 ```bash
-staticpress init -u https://example.com -k YOUR_API_KEY
+pangolin init -u https://example.com -k YOUR_API_KEY
 ```
 
 ### 2. Export to Static HTML
 
 ```bash
-staticpress export -d dist
+pangolin export -d dist
 ```
 
 ### 3. Deploy to S3
 
 ```bash
-staticpress deploy -b my-bucket -r us-east-1
+pangolin deploy -b my-bucket -r us-east-1
 ```
 
 ## Commands
 
 ### init
 
-Initialize StaticPress with your WordPress site.
+Initialize Pangolin with your WordPress site.
 
 ```bash
-staticpress init [flags]
+pangolin init [flags]
 ```
 
 Flags:
@@ -72,7 +72,7 @@ Flags:
 Export WordPress site to static HTML.
 
 ```bash
-staticpress export [flags]
+pangolin export [flags]
 ```
 
 Flags:
@@ -84,7 +84,7 @@ Flags:
 Deploy static files to S3.
 
 ```bash
-staticpress deploy [flags]
+pangolin deploy [flags]
 ```
 
 Flags:
@@ -97,7 +97,7 @@ Flags:
 Start a local server to preview the exported site.
 
 ```bash
-staticpress serve [flags]
+pangolin serve [flags]
 ```
 
 Flags:
@@ -109,14 +109,14 @@ Flags:
 Start the web dashboard for managing exports.
 
 ```bash
-staticpress dashboard
+pangolin dashboard
 ```
 
 Starts on http://localhost:3000
 
 ## Configuration
 
-Config is stored at `~/.staticpress/staticpress.yaml`:
+Config is stored at `~/.pangolin/pangolin.yaml`:
 
 ```yaml
 site_url: "https://example.com"
@@ -147,7 +147,7 @@ The WordPress plugin provides API key authentication. Install from [wp-plugin/](
 
 1. Upload the plugin to your WordPress
 2. Activate the plugin
-3. Generate an API key in Settings → StaticPress
+3. Generate an API key in Settings → Pangolin
 
 ## How It Works
 

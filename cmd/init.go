@@ -3,15 +3,15 @@ package cmd
 import (
 	"fmt"
 
-	"staticpress/cmd/internal/config"
+	"github.com/pangolin-cms/staticpress/cmd/internal/config"
 
 	"github.com/spf13/cobra"
 )
 
 var InitCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize StaticPress configuration",
-	Long:  `Initialize StaticPress by connecting to your WordPress site and saving the configuration.`,
+	Short: "Initialize Pangolin configuration",
+	Long:  `Initialize Pangolin by connecting to your WordPress site and saving the configuration.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		url, _ := cmd.Flags().GetString("url")
 		apiKey, _ := cmd.Flags().GetString("api-key")
@@ -33,7 +33,7 @@ var InitCmd = &cobra.Command{
 			return fmt.Errorf("failed to save config: %w", err)
 		}
 
-		fmt.Println("StaticPress initialized successfully!")
+		fmt.Println("Pangolin initialized successfully!")
 		fmt.Printf("Site URL: %s\n", url)
 		return nil
 	},

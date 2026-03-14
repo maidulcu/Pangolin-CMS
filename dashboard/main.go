@@ -51,10 +51,10 @@ func main() {
 }
 
 func loadConfig() (string, string, string) {
-	viper.SetConfigName("staticpress")
+	viper.SetConfigName("pangolin")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("$HOME/.staticpress")
+	viper.AddConfigPath("$HOME/.pangolin")
 
 	viper.ReadInConfig()
 
@@ -85,7 +85,7 @@ func exportHandler(c *fiber.Ctx) error {
 	siteURL, _, _ := loadConfig()
 
 	if siteURL == "" {
-		return c.JSON(fiber.Map{"error": "Not initialized. Run 'staticpress init' first"})
+		return c.JSON(fiber.Map{"error": "Not initialized. Run 'pangolin init' first"})
 	}
 
 	exports = append([]ExportLog{{
@@ -96,7 +96,7 @@ func exportHandler(c *fiber.Ctx) error {
 	}}, exports...)
 
 	go func() {
-		cmd := exec.Command("./staticpress", "export", "-d", "dist")
+		cmd := exec.Command("./pangolin", "export", "-d", "dist")
 		cmd.Env = os.Environ()
 		cmd.Run()
 
@@ -122,7 +122,7 @@ func deployHandler(c *fiber.Ctx) error {
 	}
 
 	go func() {
-		cmd := exec.Command("./staticpress", "deploy", "-b", s3Bucket, "-r", s3Region)
+		cmd := exec.Command("./pangolin", "deploy", "-b", s3Bucket, "-r", s3Region)
 		cmd.Env = os.Environ()
 		cmd.Run()
 	}()

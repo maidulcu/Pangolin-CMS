@@ -1,4 +1,4 @@
-module staticpress
+module github.com/pangolin-cms/staticpress
 
 go 1.21
 

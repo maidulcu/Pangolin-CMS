@@ -10,9 +10,9 @@ import (
 var DashboardCmd = &cobra.Command{
 	Use:   "dashboard",
 	Short: "Start the web dashboard",
-	Long:  `Start the StaticPress web dashboard for managing exports.`,
+	Long:  `Start the Pangolin web dashboard for managing exports.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dashboardBinary := "staticpress-dashboard"
+		dashboardBinary := "pangolin-dashboard"
 
 		if _, err := os.Stat(dashboardBinary); err != nil {
 			dashboardBinary = "./dashboard"

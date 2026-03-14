@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"staticpress/cmd/internal/config"
+	"github.com/pangolin-cms/staticpress/cmd/internal/config"
 
 	"github.com/PuerkitoBio/goquery"
 )
