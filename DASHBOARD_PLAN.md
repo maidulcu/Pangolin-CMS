@@ -1,7 +1,7 @@
-# StaticPress Dashboard Plan
+# Pangolin Dashboard Plan
 
 ## Overview
-Web-based dashboard for managing StaticPress exports, deployments, and site monitoring.
+Web-based dashboard for managing Pangolin exports, deployments, and site monitoring.
 
 ## Technology Stack
 - **Framework:** Fiber (Go)
@@ -10,11 +10,11 @@ Web-based dashboard for managing StaticPress exports, deployments, and site moni
 
 ## Features
 
-### Core Features
-- [ ] Export management (trigger, monitor progress)
-- [ ] Deployment history
-- [ ] Site configuration
-- [ ] Preview exported site
+### Core Features (Implemented)
+- [x] Export management (trigger, monitor progress)
+- [x] Deployment history
+- [x] Site configuration
+- [x] Preview exported site
 
 ### Pro Features
 - [ ] Auto-sync on content change (webhooks)
@@ -47,7 +47,7 @@ dashboard/
 
 ```
 ┌─────────────────────────────────────────┐
-│  StaticPress          [Site] [Logout]  │
+│  Pangolin            [Site] [Logout]   │
 ├─────────────────────────────────────────┤
 │  ┌─────────┐  ┌─────────┐  ┌────────┐ │
 │  │ Exported│  │  Pages  │  │ Status │ │
@@ -65,11 +65,11 @@ dashboard/
 
 ## Implementation Phases
 
-### Phase 1: Basic Dashboard
-1. Setup Fiber app
-2. Basic HTML templates
-3. Export trigger via API call
-4. Progress display
+### Phase 1: Basic Dashboard (Done)
+1. Setup Fiber app ✅
+2. Basic HTML templates ✅
+3. Export trigger via API call ✅
+4. Progress display ✅
 
 ### Phase 2: Enhanced Features
 1. Real-time updates (HTMX)

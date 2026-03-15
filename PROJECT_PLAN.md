@@ -1,14 +1,14 @@
-# StaticPress - Project Plan
+# Pangolin - Project Plan
 
 ## Overview
-StaticPress is a CLI tool to export WordPress sites to static HTML for deployment to S3, Netlify, or other static hosting providers.
+Pangolin is a CLI tool to export WordPress sites to static HTML for deployment to S3, Netlify, or other static hosting providers.
 
 ## Architecture
 
 ### Components
-1. **CLI (Go)** - Main engine: `init`, `export`, `deploy`
+1. **CLI (Go)** - Main engine: `init`, `export`, `deploy`, `serve`, `dashboard`
 2. **Connector (PHP)** - WordPress Plugin for Auth & Webhooks
-3. **Dashboard (Go/HTMX)** - Optional GUI for Pro users
+3. **Dashboard (Go/HTMX)** - Web UI for export management
 
 ### Technology Stack
 - **Language:** Go 1.21+
@@ -16,49 +16,43 @@ StaticPress is a CLI tool to export WordPress sites to static HTML for deploymen
 - **HTML Parsing:** goquery
 - **Config:** Viper
 - **AWS SDK:** AWS SDK v2 for S3
+- **Dashboard:** Fiber + HTMX + TailwindCSS
 - **WP Plugin:** PHP (WordPress)
 
 ## Current Status: MVP Complete ✅
 
 ### Completed Features
-- [x] CLI with Cobra (init, export, deploy commands)
+- [x] CLI with Cobra (init, export, deploy, serve, dashboard)
 - [x] Sitemap fetching (sitemap.xml / wp-sitemap.xml)
 - [x] Concurrent page crawling with goroutines
 - [x] Link rewriting (absolute → relative URLs)
 - [x] Static HTML export to local folder
-- [x] Config management with Viper (saves to ~/.staticpress/)
+- [x] Config management with Viper (saves to ~/.pangolin/)
 - [x] S3 deployment with content-type detection
+- [x] WordPress Plugin for API key auth
 
 ### Usage
 ```bash
 # Initialize with WordPress site
-staticpress init -u https://example.com -k YOUR_API_KEY
+pangolin init -u https://example.com -k YOUR_API_KEY
 
 # Export to static HTML
-staticpress export -c 5 -d dist
+pangolin export -c 5 -d dist
 
 # Deploy to S3
-staticpress deploy -b my-bucket -r us-east-1
+pangolin deploy -b my-bucket -r us-east-1
 ```
 
 ## Future Enhancements
-
-### Phase 1: WordPress Plugin
-- [ ] PHP WordPress plugin
-- [ ] API key generation endpoint
-- [ ] Auth via Bearer token
-- [ ] Webhook support for auto-export
 
 ### Phase 2: Enhanced Features
 - [ ] Netlify deployment support
 - [ ] Image optimization
 - [ ] CSS/JS asset bundling
 - [ ] Incremental export (only changed pages)
-- [ ] Preview mode (local server)
 
-### Phase 3: Pro Features (Dashboard)
-- [ ] Go/HTMX dashboard
-- [ ] Auto-sync on content change
+### Phase 3: Pro Features
+- [ ] Auto-sync on content change (webhooks)
 - [ ] CDN cache invalidation
 - [ ] Multi-site support
 
@@ -66,26 +60,30 @@ staticpress deploy -b my-bucket -r us-east-1
 - No admin access required
 - Binary runs locally (not on WP server)
 - API key requires only `edit_posts` capability
-- Config stored encrypted locally
 
 ## Project Structure
 ```
 ├── main.go                 # Entry point
 ├── go.mod                  # Go dependencies
 ├── cmd/
-│   ├── init.go             # init command
-│   ├── export.go           # export command
-│   ├── deploy.go           # deploy command
+│   ├── init.go            # init command
+│   ├── export.go          # export command
+│   ├── deploy.go          # deploy command
+│   ├── serve.go           # preview server
+│   ├── dashboard.go       # dashboard command
 │   └── internal/
-│       ├── config/         # Config management
+│       ├── config/        # Config management
 │       ├── sitemap/       # Sitemap fetching
 │       ├── crawler/       # Page fetching & link rewriting
 │       └── exporter/      # Export & S3 upload
-└── wp-plugin/              # WordPress plugin (future)
+├── dashboard/             # Web dashboard
+│   ├── main.go           # Fiber server
+│   └── views/            # HTMX templates
+└── wp-plugin/            # WordPress plugin
 ```
 
 ## Configuration
-Config is saved to `~/.staticpress/staticpress.yaml`:
+Config is saved to `~/.pangolin/pangolin.yaml`:
 ```yaml
 site_url: "https://example.com"
 api_key: "your-api-key"
@@ -98,7 +96,6 @@ s3_region: "us-east-1"
 - `AWS_SECRET_ACCESS_KEY`
 
 ## Roadmap
-1. **MVP** (Current) - CLI export to local folder ✅
-2. **Phase 1** - WordPress Plugin for auth
-3. **Phase 2** - Enhanced features (Netlify, image optimization)
-4. **Phase 3** - Dashboard & Pro features
+1. **MVP** - CLI export to local folder ✅
+2. **Phase 1** - Enhanced features (Netlify, image optimization)
+3. **Phase 2** - Pro features (auto-sync, multi-site)
