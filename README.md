@@ -9,17 +9,50 @@ A CLI tool to export WordPress sites to static HTML for deployment to S3, Netlif
 - **Cost**: Host on S3, Cloudflare Pages, or Netlify for free/minimal cost
 - **Simplicity**: No WordPress maintenance, updates, or security patches
 
-## Features
+## Free Features ✅
 
-- Concurrent page crawling with goroutines
-- Automatic asset downloading (images, CSS, JS)
-- Automatic link rewriting (absolute → relative URLs)
-- Sitemap discovery (supports WordPress native sitemaps)
-- S3 deployment with automatic content-type detection
-- Local preview server
-- Web dashboard for export management
+All features below are **100% free** and open source (MIT License).
+
+### CLI Commands
+- `init` - Initialize with WordPress site
+- `export` - Export site to static HTML
+- `deploy` - Deploy to S3
+- `serve` - Local preview server
+- `dashboard` - Web UI for management
+
+### Core Functionality
+- Concurrent page crawling (goroutines)
+- **Automatic asset downloading** (images, CSS, JS)
+- **Automatic link rewriting** (absolute → relative URLs)
+- Sitemap discovery (sitemap.xml / wp-sitemap.xml)
 - Export summary with success/fail counts
-- Config stored in `~/.pangolin/`
+
+### Dashboard Features
+- Real-time progress updates
+- Export/deploy history with persistence
+- Settings management (site URL, API key, S3 config)
+- Stats dashboard (pages, assets, totals)
+
+### WordPress Plugin
+- API key authentication
+- REST API endpoints
+- Admin settings page
+- Requires only `edit_posts` capability
+
+## Pro Features 🔒
+
+These features will be available in the paid version.
+
+- **Netlify deployment** - One-click deploy to Netlify
+- **Image optimization** - Compress images during export
+- **Incremental exports** - Only export changed pages
+- **Auto-sync** - Webhook triggers automatic exports
+- **CDN cache invalidation** - Auto-clear CloudFlare/Fastly cache
+- **Multi-site support** - Manage multiple WordPress sites
+- **Scheduled exports** - cron-based automatic exports
+- **Priority support** - Faster issue resolution
+
+[Subscribe for Pro →](#) *(coming soon)*
 
 ## Installation
 
@@ -37,19 +70,26 @@ Download from [Releases](https://github.com/pangolin-cms/staticpress/releases)
 
 ## Quick Start
 
-### 1. Initialize
+### 1. Install WordPress Plugin
+
+1. Upload `wp-plugin/` to your `/wp-content/plugins/` directory
+2. Activate in WordPress admin
+3. Go to **Settings → Pangolin**
+4. Click **Generate API Key**
+
+### 2. Initialize CLI
 
 ```bash
 pangolin init -u https://example.com -k YOUR_API_KEY
 ```
 
-### 2. Export to Static HTML
+### 3. Export Site
 
 ```bash
 pangolin export -d dist
 ```
 
-### 3. Deploy to S3
+### 4. Deploy to S3
 
 ```bash
 pangolin deploy -b my-bucket -r us-east-1
@@ -136,33 +176,19 @@ export AWS_ACCESS_KEY_ID="your-access-key"
 export AWS_SECRET_ACCESS_KEY="your-secret-key"
 ```
 
-## WordPress Plugin
-
-The WordPress plugin provides API key authentication. Install from [wp-plugin/](wp-plugin/) directory.
-
-### Requirements
-
-- WordPress 5.0+
-- PHP 7.4+
-
-### Installation
-
-1. Upload the plugin to your WordPress
-2. Activate the plugin
-3. Generate an API key in Settings → Pangolin
-
 ## How It Works
 
-1. **Sitemap Discovery**: Finds sitemap.xml or wp-sitemap.xml
-2. **Crawling**: Fetches pages concurrently using goroutines
-3. **Link Rewriting**: Converts absolute URLs to relative paths
-4. **Export**: Saves as static HTML files
-5. **Deploy**: Uploads to S3 with correct MIME types
+1. **Sitemap Discovery**: finds sitemap.xml or wp-sitemap.xml
+2. **Crawling**: fetches pages concurrently using goroutines
+3. **Asset Download**: downloads images, CSS, JS locally
+4. **Link Rewriting**: converts absolute URLs to relative paths
+5. **Export**: saves as static HTML files
+6. **Deploy**: uploads to S3 with correct MIME types
 
 ## Project Structure
 
 ```
-staticpress/
+pangolin/
 ├── main.go                 # CLI entry point
 ├── cmd/
 │   ├── init.go            # init command
@@ -188,32 +214,15 @@ staticpress/
 - API key requires only `edit_posts` capability
 - Config stored in user's home directory
 
-## Roadmap
-
-### Free Features (Complete)
-- [x] MVP - CLI export to local folder
-- [x] WordPress Plugin for auth
-- [x] Preview mode (local server)
-- [x] Dashboard for export management
-- [x] Real-time progress updates
-- [x] Export/deploy history
-- [x] Settings management
-- [x] Asset downloading (images, CSS, JS)
-
-### Pro Features (Future)
-- [ ] Netlify deployment
-- [ ] Image optimization
-- [ ] Incremental exports
-- [ ] Auto-sync on content change (webhooks)
-- [ ] CDN cache invalidation
-- [ ] Multi-site support
-
 ## License
 
-MIT
+[MIT](LICENSE) - Free for personal and commercial use.
 
 ## Contributing
 
-1. Fork the repo
-2. Create a feature branch
-3. Submit a PR
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## Support
+
+- [Report Bugs](https://github.com/pangolin-cms/staticpress/issues)
+- [Request Features](https://github.com/pangolin-cms/staticpress/issues)
