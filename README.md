@@ -1,228 +1,288 @@
 # Pangolin
 
-A CLI tool to export WordPress sites to static HTML for deployment to S3, Netlify, or other static hosting providers.
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://go.dev)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/maidulcu/Pangolin-CMS)
+[![GitHub Release](https://img.shields.io/github/v/release/maidulcu/Pangolin-CMS?label=release)](https://github.com/maidulcu/Pangolin-CMS/releases)
 
-## Why Pangolin?
+> **Export WordPress sites to blazing-fast static HTML** — Deploy anywhere. Zero PHP.
 
-- **Performance**: Serve static HTML instead of dynamic PHP
-- **Security**: No WordPress database or plugins exposed
-- **Cost**: Host on S3, Cloudflare Pages, or Netlify for free/minimal cost
-- **Simplicity**: No WordPress maintenance, updates, or security patches
+---
 
 ## Free Features ✅
 
 All features below are **100% free** and open source (MIT License).
 
-### CLI Commands
-- `init` - Initialize with WordPress site
-- `export` - Export site to static HTML
-- `deploy` - Deploy to S3
-- `serve` - Local preview server
-- `dashboard` - Web UI for management
+### 🔧 Core Engine
 
-### Core Functionality
-- Concurrent page crawling (goroutines)
-- **Automatic asset downloading** (images, CSS, JS)
-- **Automatic link rewriting** (absolute → relative URLs)
-- Sitemap discovery (sitemap.xml / wp-sitemap.xml)
-- Export summary with success/fail counts
+- **Concurrent Crawling** — High-performance page fetching using Go goroutines
+- **Smart Asset Handling** — Auto-download & localize images, CSS, JS, fonts
+- **URL Rewriting** — Seamlessly convert absolute WordPress URLs to relative paths
+- **Sitemap Integration** — Auto-discover via `sitemap.xml` or `wp-sitemap.xml`
+- **Detailed Reporting** — Export summaries with success/failure metrics and logs
 
-### Dashboard Features
-- Real-time progress updates
-- Export/deploy history with persistence
-- Settings management (site URL, API key, S3 config)
-- Stats dashboard (pages, assets, totals)
+### 🎛 Dashboard (Web UI)
 
-### WordPress Plugin
-- API key authentication
-- REST API endpoints
-- Admin settings page
-- Requires only `edit_posts` capability
+- Real-time export progress with visual feedback
+- Persistent history of exports and deployments
+- Centralized settings management (site URL, API keys, S3 config)
+- Analytics dashboard: page counts, asset totals, export duration
 
-## Pro Features 🔒
+### 🔌 WordPress Plugin Companion
 
-These features will be available in the paid version.
+- Secure REST API integration with API key authentication
+- Minimal permissions: requires only `edit_posts` capability
+- Intuitive admin settings page for key management
+- No frontend impact — runs silently in the background
 
-- **Netlify deployment** - One-click deploy to Netlify
-- **Image optimization** - Compress images during export
-- **Incremental exports** - Only export changed pages
-- **Auto-sync** - Webhook triggers automatic exports
-- **CDN cache invalidation** - Auto-clear CloudFlare/Fastly cache
-- **Multi-site support** - Manage multiple WordPress sites
-- **Scheduled exports** - cron-based automatic exports
-- **Priority support** - Faster issue resolution
+---
 
-[Subscribe for Pro →](#) *(coming soon)*
+## 📦 Installation
 
-## Installation
-
-### From Source
+### Option 1: Build from Source
 
 ```bash
-git clone https://github.com/pangolin-cms/staticpress.git
-cd staticpress
+git clone https://github.com/maidulcu/Pangolin-CMS.git
+cd Pangolin-CMS
 go build -o pangolin .
 ```
 
-### Pre-built Binaries
+### Option 2: Pre-built Binaries
 
-Download from [Releases](https://github.com/pangolin-cms/staticpress/releases)
+Download the latest release for your platform:
 
-## Quick Start
+👉 [Releases Page](https://github.com/maidulcu/Pangolin-CMS/releases)
 
-### 1. Install WordPress Plugin
+### Option 3: Go Install (Go 1.21+)
 
-1. Upload `wp-plugin/` to your `/wp-content/plugins/` directory
-2. Activate in WordPress admin
-3. Go to **Settings → Pangolin**
-4. Click **Generate API Key**
+```bash
+go install github.com/maidulcu/Pangolin-CMS@latest
+```
 
-### 2. Initialize CLI
+---
+
+## 🏁 Quick Start
+
+### Step 1: Install & Configure WordPress Plugin
+
+1. Upload `wp-plugin/` to `/wp-content/plugins/` on your WordPress site
+2. Activate **Pangolin Connector** via WordPress Admin → Plugins
+3. Navigate to **Settings → Pangolin**
+4. Click **Generate API Key** and copy the key
+
+### Step 2: Initialize Pangolin CLI
 
 ```bash
 pangolin init -u https://example.com -k YOUR_API_KEY
 ```
 
-### 3. Export Site
+✅ Configuration is saved to `~/.pangolin/pangolin.yaml`
+
+### Step 3: Export to Static HTML
 
 ```bash
 pangolin export -d dist
 ```
 
-### 4. Deploy to S3
+📁 Output: Clean, self-contained static files in `./dist`
+
+### Step 4: Deploy to AWS S3
 
 ```bash
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+
 pangolin deploy -b my-bucket -r us-east-1
 ```
 
-## Commands
+### Step 5: Preview Locally (Optional)
 
-### init
+```bash
+pangolin serve -p 8080
+```
 
-Initialize Pangolin with your WordPress site.
+---
+
+## 📚 CLI Commands Reference
+
+### `init` — Connect to WordPress
 
 ```bash
 pangolin init [flags]
 ```
 
-Flags:
-- `-u, --url` - WordPress site URL (required)
-- `-k, --api-key` - API key from WP plugin (required)
+| Flag | Short | Required | Description |
+|------|-------|----------|-------------|
+| `--url` | `-u` | ✅ | WordPress site URL (e.g., `https://example.com`) |
+| `--api-key` | `-k` | ✅ | API key generated from WP plugin |
 
-### export
-
-Export WordPress site to static HTML.
+### `export` — Generate Static Site
 
 ```bash
 pangolin export [flags]
 ```
 
-Flags:
-- `-c, --concurrency` - Number of concurrent requests (default: 5)
-- `-d, --dist` - Output directory (default: "dist")
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--concurrency` | `-c` | `5` | Max concurrent page requests |
+| `--dist` | `-d` | `"dist"` | Output directory for static files |
 
-### deploy
-
-Deploy static files to S3.
+### `deploy` — Upload to S3
 
 ```bash
 pangolin deploy [flags]
 ```
 
-Flags:
-- `-b, --bucket` - S3 bucket name (required)
-- `-r, --region` - AWS region (default: "us-east-1")
-- `-d, --dist` - Directory to deploy (default: "dist")
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--bucket` | `-b` | ✅ | Target S3 bucket name |
+| `--region` | `-r` | `"us-east-1"` | AWS region |
+| `--dist` | `-d` | `"dist"` | Directory to upload |
 
-### serve
-
-Start a local server to preview the exported site.
+### `serve` — Local Preview Server
 
 ```bash
 pangolin serve [flags]
 ```
 
-Flags:
-- `-d, --dist` - Directory to serve (default: "dist")
-- `-p, --port` - Port to listen on (default: 8080)
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--dist` | `-d` | `"dist"` | Directory to serve |
+| `--port` | `-p` | `8080` | Local server port |
 
-### dashboard
-
-Start the web dashboard for managing exports.
+### `dashboard` — Web Management UI
 
 ```bash
 pangolin dashboard
 ```
 
-Starts on http://localhost:3000
+Launches at `http://localhost:3000` — manage exports, view logs, and configure settings via browser.
 
-## Configuration
+---
 
-Config is stored at `~/.pangolin/pangolin.yaml`:
+## ⚙️ Configuration
+
+Pangolin uses a YAML config file at `~/.pangolin/pangolin.yaml`:
 
 ```yaml
 site_url: "https://example.com"
 api_key: "your-api-key"
-s3_bucket: ""
+s3_bucket: "my-static-site"
 s3_region: "us-east-1"
 ```
 
-## Environment Variables
+🔐 Sensitive values like `api_key` can also be set via environment variables:
 
-For S3 deployment:
+```bash
+export PANGOLIN_API_KEY="your_key"
+```
+
+**Environment Variables (S3 Deployment):**
 
 ```bash
 export AWS_ACCESS_KEY_ID="your-access-key"
 export AWS_SECRET_ACCESS_KEY="your-secret-key"
 ```
 
-## How It Works
+---
 
-1. **Sitemap Discovery**: finds sitemap.xml or wp-sitemap.xml
-2. **Crawling**: fetches pages concurrently using goroutines
-3. **Asset Download**: downloads images, CSS, JS locally
-4. **Link Rewriting**: converts absolute URLs to relative paths
-5. **Export**: saves as static HTML files
-6. **Deploy**: uploads to S3 with correct MIME types
+## 🔍 How It Works
 
-## Project Structure
+1. **Discovery** — Fetches `sitemap.xml` or `wp-sitemap.xml` to build the URL queue
+2. **Crawling** — Concurrently fetches pages using configurable goroutines
+3. **Processing** — Parses HTML, downloads remote assets, rewrites links to relative paths
+4. **Exporting** — Writes clean, self-contained HTML files to the output directory
+5. **Deploying** — Uploads to S3 with correct `Content-Type` headers and cache controls
+
+---
+
+## 🗂 Project Structure
 
 ```
-pangolin/
+Pangolin-CMS/
 ├── main.go                 # CLI entry point
 ├── cmd/
-│   ├── init.go            # init command
-│   ├── export.go          # export command
-│   ├── deploy.go          # deploy command
-│   ├── serve.go           # preview server
-│   ├── dashboard.go       # dashboard command
+│   ├── init.go             # init command
+│   ├── export.go           # export command
+│   ├── deploy.go           # deploy command
+│   ├── serve.go            # preview server
+│   ├── dashboard.go        # dashboard command
 │   └── internal/
-│       ├── config/        # Config management
-│       ├── sitemap/       # Sitemap fetching
-│       ├── crawler/       # Page fetching & link rewriting
-│       └── exporter/      # Export & S3 upload
-├── dashboard/             # Web dashboard
-│   ├── main.go           # Fiber server
-│   └── views/            # HTMX templates
-└── wp-plugin/            # WordPress plugin
+│       ├── config/         # Config management
+│       ├── sitemap/        # Sitemap fetching
+│       ├── crawler/        # Page fetching & link rewriting
+│       └── exporter/       # Export & S3 upload
+├── dashboard/              # Web dashboard
+│   ├── main.go             # Fiber server
+│   └── views/              # HTMX templates
+└── wp-plugin/              # WordPress plugin
 ```
 
-## Security
+---
 
-- No admin access required (uses REST API)
-- Binary runs locally, not on WordPress server
-- API key requires only `edit_posts` capability
-- Config stored in user's home directory
+## 🔐 Security Best Practices
 
-## License
+- ✅ **No admin access required** — Plugin uses minimal `edit_posts` capability
+- ✅ **Local execution** — CLI runs on your machine, no remote code execution on WordPress
+- ✅ **API key isolation** — Keys stored locally in `~/.pangolin/`, never transmitted unnecessarily
+- ✅ **REST API hardening** — Nonce verification + capability checks on all endpoints
+- ✅ **No persistent connections** — Short-lived HTTP requests with timeout controls
 
-[MIT](LICENSE) - Free for personal and commercial use.
+> 🛡️ For production: rotate API keys periodically and restrict S3 bucket policies to least privilege.
 
-## Contributing
+---
 
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## 💎 Pro Features (Coming Soon)
 
-## Support
+Unlock advanced capabilities with **Pangolin Pro**:
 
-- [Report Bugs](https://github.com/pangolin-cms/staticpress/issues)
-- [Request Features](https://github.com/pangolin-cms/staticpress/issues)
+| Feature | Benefit |
+|---------|---------|
+| 🚀 One-Click Netlify Deploy | `pangolin deploy --platform netlify` with auto-site creation |
+| 🖼 Smart Image Optimization | Auto-compress & convert images to WebP/AVIF during export |
+| 🔄 Incremental Exports | Detect changed content via last-modified headers — export only deltas |
+| 🪝 Webhook Auto-Sync | Trigger exports automatically on WordPress post publish/update |
+| 🌍 CDN Cache Invalidation | Auto-purge Cloudflare, Fastly, or CloudFront after deploy |
+| 🌐 Multi-Site Management | Handle multiple WordPress instances from one CLI config |
+| ⏱ Scheduled Exports | Cron-compatible scheduling for automated static builds |
+| 🎯 Priority Support | Dedicated Slack channel + 24h SLA for bug resolution |
+
+🔔 **Join the waitlist:** Subscribe for Pro Updates *(coming soon)*
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Commit changes with clear messages: `git commit -m 'feat: add image optimization hook'`
+4. Push and open a Pull Request
+
+📖 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, testing guidelines, and code standards.
+
+**Development Requirements:**
+- Go 1.21+
+- Node.js 18+ (for dashboard assets)
+- WordPress 5.8+ (for plugin testing)
+
+---
+
+## 🆘 Support & Community
+
+- 🐛 **Report a Bug:** [GitHub Issues](https://github.com/maidulcu/Pangolin-CMS/issues)
+- 💡 **Request a Feature:** [Feature Requests](https://github.com/maidulcu/Pangolin-CMS/issues)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/maidulcu/Pangolin-CMS/discussions)
+
+---
+
+## 📜 License
+
+Distributed under the [MIT License](LICENSE).
+
+✅ Free for personal and commercial use. No attribution required, but stars are appreciated! ⭐
+
+---
+
+*Built with ❤️ by [Maidul](https://github.com/maidulcu) — Empowering WordPress to go static, one export at a time.*
