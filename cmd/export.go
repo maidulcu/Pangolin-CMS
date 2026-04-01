@@ -14,6 +14,8 @@ var (
 	optImageFormat  string
 	optImageQuality int
 	optMinify       bool
+	optIncremental  bool
+	optClearCache   bool
 )
 
 var ExportCmd = &cobra.Command{
@@ -36,12 +38,34 @@ var ExportCmd = &cobra.Command{
 
 		fmt.Printf("Found %d URLs to export\n", len(urls))
 
-		exp := exporter.NewExporter(distDir, concurrency)
-		if err := exp.Export(urls); err != nil {
-			return fmt.Errorf("export failed: %w", err)
+		if optClearCache {
+			fmt.Println("Clearing export cache...")
+			incExp := exporter.NewIncrementalExporter(distDir, concurrency)
+			if err := incExp.ClearCache(); err != nil {
+				fmt.Printf("Cache cleared: %v\n", err)
+			} else {
+				fmt.Println("Cache cleared successfully")
+			}
 		}
 
-		fmt.Printf("Successfully exported to %s\n", distDir)
+		var totalExported int
+		if optIncremental {
+			incExp := exporter.NewIncrementalExporter(distDir, concurrency)
+			totalExported, err = incExp.ExportIncremental(urls)
+			if err != nil {
+				return fmt.Errorf("incremental export failed: %w", err)
+			}
+		} else {
+			exp := exporter.NewExporter(distDir, concurrency)
+			if err := exp.Export(urls); err != nil {
+				return fmt.Errorf("export failed: %w", err)
+			}
+			totalExported = len(urls)
+		}
+
+		if !optIncremental || totalExported > 0 {
+			fmt.Printf("Successfully exported %d pages to %s\n", totalExported, distDir)
+		}
 
 		if optImages {
 			fmt.Println("\nOptimizing images...")
@@ -80,4 +104,6 @@ func init() {
 	ExportCmd.Flags().StringVar(&optImageFormat, "image-format", "webp", "Image output format (webp, avif)")
 	ExportCmd.Flags().IntVar(&optImageQuality, "image-quality", 80, "Image quality (1-100)")
 	ExportCmd.Flags().BoolVar(&optMinify, "minify", false, "Enable CSS/JS minification")
+	ExportCmd.Flags().BoolVar(&optIncremental, "incremental", false, "Only export changed pages (uses ETag/Last-Modified)")
+	ExportCmd.Flags().BoolVar(&optClearCache, "clear-cache", false, "Clear the export cache before exporting")
 }
