@@ -8,10 +8,12 @@ import (
 )
 
 type Config struct {
-	SiteURL  string `mapstructure:"site_url"`
-	APIKey   string `mapstructure:"api_key"`
-	S3Bucket string `mapstructure:"s3_bucket"`
-	S3Region string `mapstructure:"s3_region"`
+	SiteURL      string `mapstructure:"site_url"`
+	APIKey       string `mapstructure:"api_key"`
+	S3Bucket     string `mapstructure:"s3_bucket"`
+	S3Region     string `mapstructure:"s3_region"`
+	NetlifyToken string `mapstructure:"netlify_token"`
+	NetlifySite  string `mapstructure:"netlify_site"`
 }
 
 func LoadConfig() (*Config, error) {
