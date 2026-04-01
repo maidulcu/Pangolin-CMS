@@ -19,7 +19,7 @@ Pangolin is a CLI tool to export WordPress sites to static HTML for deployment t
 - **Dashboard:** Fiber + HTMX + TailwindCSS
 - **WP Plugin:** PHP (WordPress)
 
-## Current Status: MVP Complete ✅
+## Current Status: Phase 2 Complete ✅
 
 ### Completed Features
 - [x] CLI with Cobra (init, export, deploy, serve, dashboard)
@@ -30,6 +30,10 @@ Pangolin is a CLI tool to export WordPress sites to static HTML for deployment t
 - [x] Config management with Viper (saves to ~/.pangolin/)
 - [x] S3 deployment with content-type detection
 - [x] WordPress Plugin for API key auth
+- [x] Netlify deployment support
+- [x] Image optimization (WebP conversion)
+- [x] CSS/JS minification
+- [x] Incremental export (ETag/Last-Modified)
 
 ### Usage
 ```bash
@@ -45,16 +49,19 @@ pangolin deploy -b my-bucket -r us-east-1
 
 ## Future Enhancements
 
-### Phase 2: Enhanced Features
-- [ ] Netlify deployment support
-- [ ] Image optimization
-- [ ] CSS/JS asset bundling
-- [ ] Incremental export (only changed pages)
+### Phase 2: Enhanced Features (COMPLETE)
+- [x] Netlify deployment support
+- [x] Image optimization (WebP)
+- [x] CSS/JS minification
+- [x] Incremental export (only changed pages)
 
 ### Phase 3: Pro Features
 - [ ] Auto-sync on content change (webhooks)
-- [ ] CDN cache invalidation
+- [ ] CDN cache invalidation (Cloudflare/Fastly/CloudFront)
 - [ ] Multi-site support
+- [ ] Scheduled exports
+- [ ] Real-time dashboard updates
+- [ ] Priority support
 
 ## Security Model
 - No admin access required

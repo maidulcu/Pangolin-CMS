@@ -71,10 +71,10 @@ dashboard/
 3. Export trigger via API call ✅
 4. Progress display ✅
 
-### Phase 2: Enhanced Features
-1. Real-time updates (HTMX)
-2. Deployment history
-3. Settings management
+### Phase 2: Enhanced Features (DONE)
+1. Real-time updates (HTMX) ✅
+2. Deployment history ✅
+3. Settings management ✅
 
 ### Phase 3: Pro Features
 1. Authentication

@@ -20,6 +20,9 @@ All features below are **100% free** and open source (MIT License).
 - **URL Rewriting** — Seamlessly convert absolute WordPress URLs to relative paths
 - **Sitemap Integration** — Auto-discover via `sitemap.xml` or `wp-sitemap.xml`
 - **Detailed Reporting** — Export summaries with success/failure metrics and logs
+- **Image Optimization** — Convert images to WebP format with configurable quality
+- **Asset Minification** — Minify CSS and JS files for smaller bundle sizes
+- **Incremental Export** — Only export changed pages using ETag/Last-Modified headers
 
 ### 🎛 Dashboard (Web UI)
 
@@ -126,8 +129,12 @@ pangolin export [flags]
 |------|-------|---------|-------------|
 | `--concurrency` | `-c` | `5` | Max concurrent page requests |
 | `--dist` | `-d` | `"dist"` | Output directory for static files |
+| `--optimize-images` | | `false` | Enable image optimization to WebP |
+| `--image-quality` | | `80` | Image quality (1-100) |
+| `--minify` | | `false` | Enable CSS/JS minification |
+| `--incremental` | | `false` | Only export changed pages |
 
-### `deploy` — Upload to S3
+### `deploy` — Upload to S3 or Netlify
 
 ```bash
 pangolin deploy [flags]
@@ -135,8 +142,11 @@ pangolin deploy [flags]
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--bucket` | `-b` | ✅ | Target S3 bucket name |
-| `--region` | `-r` | `"us-east-1"` | AWS region |
+| `--platform` | `-p` | `s3` | Deployment platform: `s3` or `netlify` |
+| `--bucket` | `-b` | ✅ | Target S3 bucket name (for s3) |
+| `--region` | `-r` | `"us-east-1"` | AWS region (for s3) |
+| `--netlify-token` | | | Netlify auth token |
+| `--netlify-site` | | | Netlify site ID |
 | `--dist` | `-d` | `"dist"` | Directory to upload |
 
 ### `serve` — Local Preview Server
