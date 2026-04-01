@@ -9,6 +9,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	optImages       bool
+	optImageFormat  string
+	optImageQuality int
+)
+
 var ExportCmd = &cobra.Command{
 	Use:   "export",
 	Short: "Export WordPress site to static HTML",
@@ -29,12 +35,27 @@ var ExportCmd = &cobra.Command{
 
 		fmt.Printf("Found %d URLs to export\n", len(urls))
 
-		exporter := exporter.NewExporter(distDir, concurrency)
-		if err := exporter.Export(urls); err != nil {
+		exp := exporter.NewExporter(distDir, concurrency)
+		if err := exp.Export(urls); err != nil {
 			return fmt.Errorf("export failed: %w", err)
 		}
 
 		fmt.Printf("Successfully exported to %s\n", distDir)
+
+		if optImages {
+			fmt.Println("\nOptimizing images...")
+			optimizer := exporter.NewImageOptimizer(exporter.OptimizeOptions{
+				Enabled:     true,
+				Format:      optImageFormat,
+				Quality:     optImageQuality,
+				Parallelism: concurrency,
+			})
+
+			if err := optimizer.OptimizeDirectory(distDir); err != nil {
+				return fmt.Errorf("image optimization failed: %w", err)
+			}
+		}
+
 		return nil
 	},
 }
@@ -42,4 +63,7 @@ var ExportCmd = &cobra.Command{
 func init() {
 	ExportCmd.Flags().IntP("concurrency", "c", 5, "Number of concurrent requests")
 	ExportCmd.Flags().StringP("dist", "d", "dist", "Output directory")
+	ExportCmd.Flags().BoolVar(&optImages, "optimize-images", false, "Enable image optimization")
+	ExportCmd.Flags().StringVar(&optImageFormat, "image-format", "webp", "Image output format (webp, avif)")
+	ExportCmd.Flags().IntVar(&optImageQuality, "image-quality", 80, "Image quality (1-100)")
 }
