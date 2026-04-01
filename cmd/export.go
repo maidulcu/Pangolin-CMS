@@ -13,6 +13,7 @@ var (
 	optImages       bool
 	optImageFormat  string
 	optImageQuality int
+	optMinify       bool
 )
 
 var ExportCmd = &cobra.Command{
@@ -56,6 +57,18 @@ var ExportCmd = &cobra.Command{
 			}
 		}
 
+		if optMinify {
+			fmt.Println("\nMinifying assets...")
+			bundler := exporter.NewBundler(exporter.BundlerOptions{
+				Minify:      true,
+				Parallelism: concurrency,
+			})
+
+			if err := bundler.BundleDirectory(distDir); err != nil {
+				return fmt.Errorf("asset minification failed: %w", err)
+			}
+		}
+
 		return nil
 	},
 }
@@ -66,4 +79,5 @@ func init() {
 	ExportCmd.Flags().BoolVar(&optImages, "optimize-images", false, "Enable image optimization")
 	ExportCmd.Flags().StringVar(&optImageFormat, "image-format", "webp", "Image output format (webp, avif)")
 	ExportCmd.Flags().IntVar(&optImageQuality, "image-quality", 80, "Image quality (1-100)")
+	ExportCmd.Flags().BoolVar(&optMinify, "minify", false, "Enable CSS/JS minification")
 }
